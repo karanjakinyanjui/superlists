@@ -23,9 +23,11 @@ class NewVisitorTest(unittest.TestCase):
 
         # She notices the page title and header mentions to-do lists
         assert 'To-Do' in self.browser.title, f"Browser title was `{self.browser.title}`"
+        header_text = self.browser.find_element(By.TAG_NAME, 'h1').text
+        self.assertIn('To-Do', header_text)
 
         # She is invited to enter a to-do item straight away
-        input_box = self.browser.find_element('#new_item_input')
+        input_box = self.browser.find_element(By.ID, 'new_item_input')
         self.assertEqual(input_box.get_attribute('placeholder'), 'Enter a to-do item',
                          "Input box placeholder not correct")
 
@@ -35,8 +37,11 @@ class NewVisitorTest(unittest.TestCase):
         # When she hits enter, the page updates, and now the page list
         # "1. Buy peacock feathers"
         input_box.send_keys(Keys.ENTER)
-        time.sleep(1)
+        time.sleep(10)
 
         table = self.browser.find_element(By.ID, 'to-do-list-table')
         rows = table.find_elements(By.TAG_NAME, 'tr')
-        self.assertEqual(rows[1].text, '1. Buy peacock feathers')
+        text = rows[0].text
+        self.assertTrue(
+            any(row.text == '1. Buy peacock feathers' for row in rows)
+        )
