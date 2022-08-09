@@ -1,4 +1,6 @@
 import unittest
+
+import pytest
 from selenium import webdriver
 
 
@@ -10,6 +12,7 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.quit()
         return super().tearDown()
 
+    @pytest.mark.e2e
     def test_django_app(self):
         # Edith has heard about a new online to-do app.
         # She goes to check out its homepage
