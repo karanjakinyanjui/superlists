@@ -15,6 +15,11 @@ class NewVisitorTest(unittest.TestCase):
         self.browser.quit()
         return super().tearDown()
 
+    def check_for_row_in_table(self, row_text):
+        table = self.browser.find_element(By.ID, 'to-do-list-table')
+        rows = table.find_elements(By.TAG_NAME, 'tr')
+        self.assertIn(row_text, (row.text for row in rows))
+
     @pytest.mark.e2e
     def test_django_app(self):
         # Edith has heard about a new online to-do app.
@@ -39,6 +44,4 @@ class NewVisitorTest(unittest.TestCase):
         input_box.send_keys(Keys.ENTER)
         time.sleep(1)
 
-        table = self.browser.find_element(By.ID, 'to-do-list-table')
-        rows = table.find_elements(By.TAG_NAME, 'tr')
-        self.assertIn('1. Buy peacock feathers', (row.text for row in rows))
+        self.check_for_row_in_table('1. Buy peacock feathers')
