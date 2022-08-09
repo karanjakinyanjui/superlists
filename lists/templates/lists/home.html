@@ -27,7 +27,7 @@
           {% for item in items %}
 
           <tr>
-            <td>1. {{ item.text }}</td>
+            <td>{{ forloop.counter }}. {{ item.text }}</td>
           </tr>
           {% endfor %}
         </tbody>
