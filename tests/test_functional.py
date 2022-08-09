@@ -1,13 +1,13 @@
 import time
-import unittest
 
 import pytest
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
 
@@ -24,7 +24,7 @@ class NewVisitorTest(unittest.TestCase):
     def test_django_app(self):
         # Edith has heard about a new online to-do app.
         # She goes to check out its homepage
-        self.browser.get('http://localhost:8080')
+        self.browser.get(self.live_server_url)
 
         # She notices the page title and header mentions to-do lists
         assert 'To-Do' in self.browser.title, f"Browser title was `{self.browser.title}`"
