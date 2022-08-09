@@ -32,16 +32,30 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn('To-Do', header_text)
 
         # She is invited to enter a to-do item straight away
-        input_box = self.browser.find_element(By.ID, 'new_item_input')
-        self.assertEqual(input_box.get_attribute('placeholder'), 'Enter a to-do item',
+        self.assertEqual(self.input_box.get_attribute('placeholder'), 'Enter a to-do item',
                          "Input box placeholder not correct")
 
-        # She types "Buy Peacock feathers" into a text box
-        input_box.send_keys('Buy peacock feathers')
+        # She types "Buy Peacock feathers" into a text box and hits enter
+        to_do_1 = 'Buy peacock feathers'
+        self.add_to_do(to_do_1)
 
-        # When she hits enter, the page updates, and now the page list
-        # "1. Buy peacock feathers"
-        input_box.send_keys(Keys.ENTER)
-        time.sleep(1)
+        # the page updates, and now the page list
+        # Should show the newly added to-do
+        self.check_for_row_in_table(f'1. {to_do_1}')
 
-        self.check_for_row_in_table('1. Buy peacock feathers')
+        # There is still a text box inviting her to add another item. She
+        # enters "Use peacock feathers to make a fly"
+        to_do_2 = 'Use peacock feathers to make a fly'
+        self.add_to_do(to_do_2)
+
+        # The page updates again, and now shows both items on her list
+        self.check_for_row_in_table(f'2. {to_do_2}')
+
+    def add_to_do(self, text):
+        self.input_box.send_keys(text)
+        self.input_box.send_keys(Keys.ENTER)
+        time.sleep(2)
+
+    @property
+    def input_box(self):
+        return self.browser.find_element(By.ID, 'new_item_input')
