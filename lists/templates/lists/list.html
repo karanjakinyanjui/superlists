@@ -12,7 +12,15 @@
   <body>
     <div>
       <h1>To-Do lists</h1>
-
+      <form method="POST" action="/lists/new">
+        <input
+          type="text"
+          placeholder="Enter a to-do item"
+          id="new_item_input"
+          name="text"
+        />
+        {% csrf_token %}
+      </form>
       <table id="to-do-list-table">
         <tbody>
           {% for item in items %}
@@ -23,7 +31,7 @@
           {% endfor %}
         </tbody>
       </table>
-    {{ item }}
+      {{ item }}
     </div>
   </body>
 </html>
