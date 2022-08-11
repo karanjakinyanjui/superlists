@@ -8,7 +8,7 @@ def home_page(request):
 
 
 def view_list(request, list_id):
-    context = {"items": Item.objects.filter(list_id=list_id)}
+    context = {"list": List.objects.get(id=list_id)}
     return render(request, "lists/list.html", context=context)
 
 
