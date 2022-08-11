@@ -3,21 +3,37 @@ from django.urls import resolve
 from faker import Faker
 
 from lists.views import home_page
-from lists.models import Item
+from lists.models import Item, List
 
 fake = Faker()
 
 
-class ItemModelTest(TestCase):
-    def test_add_items(self):
-        first_item = Item.objects.create(text='The first list item')
-        self.assertEqual(Item.objects.count(), 1)
+class ListAndItemModelTest(TestCase):
+
+    def test_saving_and_retrieving_items(self):
+        item_list = List.objects.create()
+
+        Item.objects.create(text='The first list item', list=item_list)
+        Item.objects.create(text='The second list item', list=item_list)
+
+        saved_list = List.objects.first()
+        self.assertEqual(saved_list, item_list)
+
+        saved_items = Item.objects.all()
+        self.assertEqual(saved_items.count(), 2)
+
+        self.assertEqual(saved_items[0].text, 'The first list item')
+        self.assertEqual(saved_items[1].text, 'The second list item')
+        self.assertEqual(saved_items[0].list, item_list)
+        self.assertEqual(saved_items[1].list, item_list)
 
 
 class ListViewTest(TestCase):
     def test_displays_all_items(self):
-        Item.objects.create(text='The first list item')
-        Item.objects.create(text='The second list item')
+        item_list = List.objects.create()
+
+        Item.objects.create(text='The first list item', list=item_list)
+        Item.objects.create(text='The second list item', list=item_list)
 
         response = self.client.get('/lists/the-only-list-in-the-world/')
 

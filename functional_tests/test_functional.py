@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 
 MAX_WAIT = 10
 
+
 class NewVisitorTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -23,7 +24,7 @@ class NewVisitorTest(LiveServerTestCase):
             try:
                 table = self.browser.find_element(By.ID, 'to-do-list-table')
                 rows = table.find_elements(By.TAG_NAME, 'tr')
-                self.assertIn(row_text, (row.text for row in rows))
+                self.assertIn(row_text, [row.text for row in rows])
                 return
             except (AssertionError, WebDriverException) as e:
                 if time.time() - start > MAX_WAIT:
@@ -108,4 +109,3 @@ class NewVisitorTest(LiveServerTestCase):
         page_text = self.browser.find_element(By.TAG_NAME, 'body').text
         self.assertNotIn('Buy peacock feathers', page_text)
         self.assertNotIn('make a fly', page_text)
-
