@@ -39,7 +39,7 @@ class NewVisitorTest(LiveServerTestCase):
         return self.browser.find_element(By.ID, 'new_item_input')
 
     @pytest.mark.e2e
-    def test_django_app(self):
+    def test_adding_items(self):
         # Edith has heard about a new online to-do app.
         # She goes to check out its homepage
         self.browser.get(self.live_server_url)
