@@ -79,7 +79,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.check_for_row_in_table(f'1. {to_do_1}')
 
         edith_list_url = self.browser.current_url
-        self.assertRegex(edith_list_url, '/lists/.+')
+        self.assertRegex(edith_list_url, '/lists/.+/')
 
         # Now a new user, Francis, comes along to the site
         """
@@ -98,11 +98,11 @@ class NewVisitorTest(LiveServerTestCase):
         # Francis starts a new list by entering a new item. He
         # is less interesting than Edith...
         self.add_to_do('Buy Milk')
-        self.check_for_row_in_table('1: Buy milk')
+        self.check_for_row_in_table('1. Buy Milk')
 
         # Francis gets his own unique url
         francis_list_url = self.browser.current_url
-        self.assertRegex(francis_list_url, '/lists/.+')
+        self.assertRegex(francis_list_url, '/lists/.+/')
         self.assertNotEqual(francis_list_url, edith_list_url)
 
         # Again there is no sign of Edith's list
