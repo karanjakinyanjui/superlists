@@ -7,12 +7,12 @@ def home_page(request):
     return render(request, "lists/home.html")
 
 
-def view_list(request):
-    context = {"items": Item.objects.all()}
+def view_list(request, list_id):
+    context = {"items": Item.objects.filter(list_id=list_id)}
     return render(request, "lists/list.html", context=context)
 
 
 def new_list(request):
     item_list = List.objects.create()
     Item.objects.create(text=request.POST['text'], list=item_list)
-    return redirect('/lists/the-only-list-in-the-world/')
+    return redirect(f'/lists/{item_list.id}/')
