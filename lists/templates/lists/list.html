@@ -1,37 +1,15 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-    />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>To-Do lists</title>
-  </head>
-  <body>
-    <div>
-      <h1>To-Do lists</h1>
-      <form method="POST" action="/lists/{{ list.id }}/add_item">
-        <input
-          type="text"
-          placeholder="Enter a to-do item"
-          id="new_item_input"
-          name="text"
-        />
-        {% csrf_token %}
-      </form>
-      <table id="to-do-list-table">
-        <tbody>
-          {% for item in list.item_set.all %}
+{% extends "lists/home.html" %}
+{% block header_text %} Your To-Do list {% endblock %}
+{% block form_action %}/lists/{{ list.id }}/add_item{% endblock %}
+{% block list_table %}
+<table id="to-do-list-table">
+  <tbody>
+    {% for item in list.item_set.all %}
 
-          <tr>
-            <td>{{ forloop.counter }}. {{ item.text }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      {{ item }}
-    </div>
-  </body>
-</html>
+    <tr>
+      <td>{{ forloop.counter }}. {{ item.text }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
