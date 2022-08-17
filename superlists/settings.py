@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1'] + os.environ.get("ALLOWED_HOSTS", "").split(",")
 
+CSRF_TRUSTED_ORIGINS = [f'http://{host}' for host in ALLOWED_HOSTS]
 
 # ALLOWED_HOSTS.append(re)
 
