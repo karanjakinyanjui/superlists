@@ -1,6 +1,6 @@
 {% extends "lists/home.html" %}
 {% block header_text %} Your To-Do list {% endblock %}
-{% block form_action %}/lists/{{ list.id }}/{% endblock %}
+{% block form_action %}{% url 'view_list' list.id %}{% endblock %}
 {% block list_table %}
 <table id="to-do-list-table" class="table">
   <tbody>
