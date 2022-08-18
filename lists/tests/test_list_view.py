@@ -7,9 +7,12 @@ Description:
 
 
 """
+from unittest import skip
+
 from django.test import TestCase
 from django.utils.html import escape
 
+from lists.forms import DUPLICATE_ITEM_ERROR
 from lists.models import List, Item
 
 
@@ -52,4 +55,12 @@ class ListViewTest(TestCase):
         self.client.post(f'/lists/{correct_list.id}/', data={'text': 'First Item'})
         self.client.post(f'/lists/{correct_list.id}/', data={'text': ''})
         self.assertEqual(List.objects.count(), 1)
+        self.assertEqual(Item.objects.count(), 1)
+
+    def test_duplicate_item_validation_errors_show_up_on_lists_page(self):
+        correct_list = List.objects.create()
+
+        self.client.post(f'/lists/{correct_list.id}/', data={'text': 'First Item'})
+        response = self.client.post(f'/lists/{correct_list.id}/', data={'text': 'First Item'})
+        self.assertContains(response, escape(DUPLICATE_ITEM_ERROR))
         self.assertEqual(Item.objects.count(), 1)
