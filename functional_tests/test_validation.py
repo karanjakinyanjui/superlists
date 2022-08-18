@@ -25,10 +25,7 @@ class ItemValidationTest(FunctionalTest):
         self.browser.get(self.live_server_url)
         self.add_to_do("")
         self.wait_for(lambda:
-            self.assertEqual(
-                self.browser.find_element(By.CLASS_NAME, "has-error").text,
-                "You can't have an empty list item"
-            )
+                self.browser.find_element(By.CSS_SELECTOR, "#new_item_input:invalid")
         )
         # She tries again with some text for the item which now works
         self.add_to_do("Buy Milk")
@@ -39,12 +36,8 @@ class ItemValidationTest(FunctionalTest):
         # The home page refreshes, and there is an error message saying
         # that list items cannot be blank
         self.add_to_do("")
-
         self.wait_for(lambda:
-            self.assertEqual(
-                self.browser.find_element(By.CLASS_NAME, "has-error").text,
-                "You can't have an empty list item"
-            )
+                self.browser.find_element(By.CSS_SELECTOR, "#new_item_input:invalid")
         )
 
         # She tries again with some text for the item which now works

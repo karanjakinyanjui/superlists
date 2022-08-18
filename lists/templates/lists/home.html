@@ -5,19 +5,13 @@
 {% block content %}
 
     <form method="POST" action="{% block form_action %}{% url 'home' %}{% endblock %}">
-      <input
-        type="text"
-        class="form-control input-lg"
-        placeholder="Enter a to-do item"
-        id="new_item_input"
-        name="text"
-      />
+      {{ form.text }}
       {% csrf_token %}
-    {% if error %}
+{#    {% if form.text.errors %}#}
         <div class="form-group has-error">
-        <span class="help-block">{{ error }}</span>
+        <span class="help-block">{{ form.text.errors }}</span>
         </div>
-    {% endif %}
+{#    {% endif %}#}
     </form>
     {% block list_table %}
     {% endblock %}

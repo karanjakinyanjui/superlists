@@ -11,6 +11,7 @@ from django.test import TestCase
 from django.utils.html import escape
 
 from lists.models import Item, List
+from lists.forms import ItemForm, EMPTY_ITEM_ERROR
 from faker import Faker
 
 fake = Faker()
@@ -34,10 +35,13 @@ class NewListTest(TestCase):
         self.assertEqual(List.objects.count(), 0)
         self.assertEqual(Item.objects.count(), 0)
 
-    def test_validation_errors_are_sent_back_to_home_page(self):
+    def test_invalid_input_renders_home_page(self):
         response = self.client.post('/', data={'text': ''})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'lists/home.html')
-        expected_error = escape("You can't have an empty list item")
-        self.assertContains(response, expected_error)
 
+    def test_validation_errors_are_shown_on_home_page(self):
+        response = self.client.post('/', data={'text': ''})
+        self.assertIsInstance(response.context['form'], ItemForm)
+        expected_error = escape(EMPTY_ITEM_ERROR)
+        self.assertContains(response, expected_error)
