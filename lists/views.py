@@ -11,7 +11,7 @@ def view_list(request, list_id):
     if request.method == 'POST':
         form = ExistingListItemForm(request.POST, for_list=item_list)
         if form.is_valid():
-            form.save(item_list)
+            form.save()
             return redirect(item_list)
     context = {"list": item_list, "form": form}
     return render(request, "lists/list.html", context=context)

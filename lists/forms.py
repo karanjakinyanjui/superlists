@@ -44,8 +44,8 @@ class ExistingListItemForm(ItemForm):
         self.for_list = for_list
         self.instance.list = for_list
 
-    # def save(self, *args, **kwargs):
-    #     return super().save(self.for_list)
+    def save(self, *args, **kwargs):
+        return forms.ModelForm.save(self)
 
     def validate_unique(self):
         try:
