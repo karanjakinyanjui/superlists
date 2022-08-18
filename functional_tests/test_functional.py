@@ -21,22 +21,28 @@ class FunctionalTest(LiveServerTestCase):
         self.browser.quit()
         return super().tearDown()
 
-    def check_for_row_in_table(self, row_text):
+    def wait_for(self, fn):
         start = time.time()
         while True:
             try:
-                table = self.browser.find_element(By.ID, 'to-do-list-table')
-                rows = table.find_elements(By.TAG_NAME, 'tr')
-                self.assertIn(row_text, [row.text for row in rows])
-                return
+                return fn()
             except (AssertionError, WebDriverException) as e:
                 if time.time() - start > MAX_WAIT:
                     raise e
                 time.sleep(0.5)
 
+    def check_for_row_in_table(self, row_text):
+        def check_for_row(text):
+            table = self.browser.find_element(By.ID, 'to-do-list-table')
+            rows = table.find_elements(By.TAG_NAME, 'tr')
+            self.assertIn(text, [row.text for row in rows])
+        self.wait_for(lambda: check_for_row(row_text))
+
     def add_to_do(self, text):
         self.input_box.send_keys(text)
         self.input_box.send_keys(Keys.ENTER)
+
+    # def add_to_do_and_check(self, text):
 
     @property
     def input_box(self):

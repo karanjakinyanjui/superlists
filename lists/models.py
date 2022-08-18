@@ -7,4 +7,8 @@ class List(models.Model):
 
 class Item(models.Model):
     text = models.TextField()
-    list = models.ForeignKey(List, default=None, on_delete=models.DO_NOTHING)
+    list = models.ForeignKey(List, default=None, on_delete=models.CASCADE)
+
+    # def save(self, *args, **kwargs):
+    #
+    #     super().save(*args, **kwargs)
