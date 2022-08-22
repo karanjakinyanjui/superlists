@@ -48,3 +48,6 @@ class FunctionalTest(LiveServerTestCase):
     def input_box(self):
         return self.browser.find_element(By.ID, 'new_item_input')
 
+    @property
+    def email_input_box(self):
+        return self.browser.find_element(By.NAME, 'email')

@@ -8,6 +8,7 @@ Description:
 
 """
 import re
+from time import sleep
 
 import pytest
 from django.core import mail
@@ -27,7 +28,9 @@ class LoginTest(FunctionalTest):
         # and notices a "Log in" section in the navbar for the first time
         # It's telling her to enter her email address, so she does
         self.browser.get(self.live_server_url)
-        self.email_input_box.send_keys(f"{TEST_EMAIL}{Keys.ENTER}")
+        self.email_input_box.send_keys(TEST_EMAIL)
+
+        self.email_input_box.send_keys(Keys.ENTER)
 
         # A message appears telling her an email has been sent
         self.wait_for(lambda: self.assertIn(
@@ -56,3 +59,10 @@ class LoginTest(FunctionalTest):
         )
         navbar = self.browser.find_element(By.CSS_SELECTOR, '.navbar')
         self.assertIn(TEST_EMAIL, navbar.text)
+
+        logout_btn = self.browser.find_element(By.LINK_TEXT, 'Log Out')
+        logout_btn.click()
+
+        self.wait_for(
+            lambda: self.browser.find_element(By.NAME, 'email')
+        )

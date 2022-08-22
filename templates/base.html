@@ -21,16 +21,49 @@
   </head>
   <body>
     <div class="container">
-    <div class="navbar">
-        {% if user.is_authenticated %}
-            <p>Logged in as </p>
-        {% endif %}
-    </div>
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <a href="/" class="navbar-brand">Superlists</a>
+          {% if user.email %}
+          <ul class="nav navbar-nav navbar-right">
+            <li class="nav-bar-text">Logged in as {{ user.email }}</li>
+            <li><a href="{% url 'logout' %}">Log Out</a></li>
+          </ul>
+          {% else %}
+          <form
+            action="{% url 'send_login_email' %}"
+            method="post"
+            class="navbar-form navbar-right"
+          >
+            <label for="id_email">Enter email to log in:</label>
+            <input
+              id="id_email"
+              type="email"
+              name="email"
+              class="form-control"
+            />
+            {% csrf_token %}
+          </form>
+          {% endif %}
+        </div>
+      </nav>
+      {% if messages %}
       <div class="row">
-        <div class="col-md-6 mx-auto">
-          <div class="text-center">
-            <h1>{% block header_text %}{% endblock %}</h1>
-            {% block content %}{% endblock %}
+        <div class="col-md-8">
+          {% for message in messages %} {% if message.tags == 'success' %}
+          <div class="alert alert-success">
+            {% else %}
+            <div class="alert alert-warning">{% endif %} {{ message }}</div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+        <div class="row">
+          <div class="col-md-6 mx-auto">
+            <div class="text-center">
+              <h1>{% block header_text %}{% endblock %}</h1>
+              {% block content %}{% endblock %}
+            </div>
           </div>
         </div>
       </div>
