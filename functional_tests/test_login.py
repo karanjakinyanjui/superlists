@@ -54,15 +54,10 @@ class LoginTest(FunctionalTest):
         self.browser.get(url)
 
         # She is logged in
-        self.wait_for(
-            lambda: self.browser.find_element(By.LINK_TEXT, 'Log Out')
-        )
-        navbar = self.browser.find_element(By.CSS_SELECTOR, '.navbar')
-        self.assertIn(TEST_EMAIL, navbar.text)
+        self.wait_to_be_logged_in(TEST_EMAIL)
 
-        logout_btn = self.browser.find_element(By.LINK_TEXT, 'Log Out')
-        logout_btn.click()
+        # She clicks on the logout button
+        self.logout_btn.click()
 
-        self.wait_for(
-            lambda: self.browser.find_element(By.NAME, 'email')
-        )
+        # She is logged out
+        self.wait_to_be_logged_out(TEST_EMAIL)

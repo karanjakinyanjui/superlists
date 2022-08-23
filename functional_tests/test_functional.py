@@ -51,3 +51,23 @@ class FunctionalTest(LiveServerTestCase):
     @property
     def email_input_box(self):
         return self.browser.find_element(By.NAME, 'email')
+
+    @property
+    def logout_btn(self):
+        return self.browser.find_element(By.LINK_TEXT, 'Log Out')
+
+    @property
+    def navbar(self):
+        return self.browser.find_element(By.CSS_SELECTOR, '.navbar')
+
+    def wait_to_be_logged_out(self, email):
+        self.wait_for(
+            lambda: self.browser.find_element(By.NAME, 'email')
+        )
+        self.assertNotIn(email, self.navbar.text)
+
+    def wait_to_be_logged_in(self, email):
+        self.wait_for(
+            lambda: self.logout_btn
+        )
+        self.assertIn(email, self.navbar.text)
