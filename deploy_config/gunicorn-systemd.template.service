@@ -2,7 +2,7 @@
 Description=Gunicorn server for SITENAME
 [Service]
 Restart=on-failure
-User=USER
+User=username
 ENVIRONMENT=EMAIL_HOST_PASSWORD=EMAIL_PASSWORD
 WorkingDirectory=/home/username/sites/SITENAME/source
 ExecStart=/home/username/sites/SITENAME/virtualenv/bin/gunicorn \

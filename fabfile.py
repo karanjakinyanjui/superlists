@@ -71,14 +71,15 @@ def deploy(email_password):
     def _start_server():
         sed(nginx_template, "SITENAME", env.host)
         sed(service_template, "SITENAME", env.host)
-        sed(service_template, "USERNAME", env.user)
+        sed(service_template, "username", env.user)
         sed(service_template, "EMAIL_PASSWORD", email_password)
         sudo(f'cp {service_template} /etc/systemd/system/gunicorn.service')
         sudo(f'cp {nginx_template} /etc/nginx/sites-available/superlists')
         sudo(f'ln -fs /etc/nginx/sites-available/superlists /etc/nginx/sites-enabled/superlists')
+        _systemctl("reload", "nginx")
+        _systemctl("daemon-reload", '')
         _systemctl("enable", "gunicorn")
         _systemctl("restart", "gunicorn")
-        _systemctl("reload", "nginx")
 
     _create_directory_structure()
     _get_latest_source()
