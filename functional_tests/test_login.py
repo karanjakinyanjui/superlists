@@ -15,7 +15,7 @@ from django.core import mail
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-from functional_tests.test_functional import FunctionalTest
+from functional_tests.functional_tests_base import FunctionalTest
 
 TEST_EMAIL = 'edith@example.com'
 SUBJECT = 'Your login link for Superlists'
@@ -33,10 +33,7 @@ class LoginTest(FunctionalTest):
         self.email_input_box.send_keys(Keys.ENTER)
 
         # A message appears telling her an email has been sent
-        self.wait_for(lambda: self.assertIn(
-            'Check your email',
-            self.browser.find_element(By.TAG_NAME, 'body').text
-        ))
+        self.wait_for_login_email_sent_message()
 
         # She checks her mail and finds a message
         email = mail.outbox[0]

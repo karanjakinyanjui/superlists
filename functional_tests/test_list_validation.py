@@ -8,11 +8,7 @@ Description:
 
 """
 
-from unittest import skip
-
-from selenium.webdriver.common.by import By
-
-from functional_tests.test_functional import FunctionalTest
+from functional_tests.functional_tests_base import FunctionalTest
 from lists.forms import DUPLICATE_ITEM_ERROR
 
 
@@ -27,7 +23,4 @@ class ListValidationTest(FunctionalTest):
         self.add_to_do('Buy Wellies')
 
         # She sees a helpful error message
-        self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element(By.CLASS_NAME, 'has-error').text,
-            DUPLICATE_ITEM_ERROR
-        ))
+        self.wait_for_error_message(DUPLICATE_ITEM_ERROR)

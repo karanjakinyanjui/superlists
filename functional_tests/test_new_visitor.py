@@ -10,7 +10,7 @@ Description:
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-from functional_tests.test_functional import FunctionalTest
+from functional_tests.functional_tests_base import FunctionalTest
 
 
 class NewVisitorTest(FunctionalTest):

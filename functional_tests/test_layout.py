@@ -7,7 +7,7 @@ Description:
 
 
 """
-from functional_tests.test_functional import FunctionalTest
+from functional_tests.functional_tests_base import FunctionalTest
 
 
 class LayoutAndStylingTest(FunctionalTest):

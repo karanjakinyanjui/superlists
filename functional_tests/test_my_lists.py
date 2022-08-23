@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model, SESSION_KEY, BACKEND_SESSION_KEY
 from django.contrib.sessions.backends.db import SessionStore
 
-from functional_tests.test_functional import FunctionalTest
+from functional_tests.functional_tests_base import FunctionalTest
 
 User = get_user_model()
 

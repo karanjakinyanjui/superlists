@@ -11,7 +11,7 @@ from unittest import skip
 
 from selenium.webdriver.common.by import By
 
-from functional_tests.test_functional import FunctionalTest
+from functional_tests.functional_tests_base import FunctionalTest
 
 
 class ItemValidationTest(FunctionalTest):
@@ -24,9 +24,8 @@ class ItemValidationTest(FunctionalTest):
         # that list items cannot be blank
         self.browser.get(self.live_server_url)
         self.add_to_do("")
-        self.wait_for(lambda:
-                self.browser.find_element(By.CSS_SELECTOR, "#new_item_input:invalid")
-        )
+        self.wait_for_invalid_input_message()
+
         # She tries again with some text for the item which now works
         self.add_to_do("Buy Milk")
         self.check_for_row_in_table("1. Buy Milk")
@@ -36,12 +35,9 @@ class ItemValidationTest(FunctionalTest):
         # The home page refreshes, and there is an error message saying
         # that list items cannot be blank
         self.add_to_do("")
-        self.wait_for(lambda:
-                self.browser.find_element(By.CSS_SELECTOR, "#new_item_input:invalid")
-        )
+        self.wait_for_invalid_input_message()
 
         # She tries again with some text for the item which now works
         self.add_to_do("Buy Bread")
         self.check_for_row_in_table("2. Buy Bread")
 
-        # self.fail("Failing ...")
