@@ -1,5 +1,3 @@
-import sys
-
 from django.contrib.auth import get_user_model
 
 from accounts.models import Token
@@ -9,11 +7,11 @@ User = get_user_model()
 
 class PasswordlessAuthenticationBackend:
 
-
     def authenticate(self, request, uid):
         try:
             token = Token.objects.get(uid=uid)
             user, _ = User.objects.get_or_create(email=token.email)
+            token.delete()
             return user
         except Token.DoesNotExist:
             return None
