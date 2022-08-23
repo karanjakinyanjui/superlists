@@ -17,7 +17,7 @@ def init(username='user'):
     sudo(f'apt install -y nginx python3 python3-pip python3-venv')
 
 
-def deploy(email_password):
+def deploy(email_password=None):
     site_folder = f"/home/{env.user}/sites/{env.host}"
     source_folder = site_folder + "/source"
     virtualenv_folder = f'{source_folder}/../virtualenv'
@@ -72,8 +72,9 @@ def deploy(email_password):
         sed(nginx_template, "SITENAME", env.host)
         sed(service_template, "SITENAME", env.host)
         sed(service_template, "username", env.user)
-        sed(service_template, "EMAIL_PASSWORD", email_password)
-        sudo(f'cp {service_template} /etc/systemd/system/gunicorn.service')
+        if email_password:
+            sed(service_template, "EMAIL_PASSWORD", email_password)
+            sudo(f'cp {service_template} /etc/systemd/system/gunicorn.service')
         sudo(f'cp {nginx_template} /etc/nginx/sites-available/superlists')
         sudo(f'ln -fs /etc/nginx/sites-available/superlists /etc/nginx/sites-enabled/superlists')
         _systemctl("reload", "nginx")

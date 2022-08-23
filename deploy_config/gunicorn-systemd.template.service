@@ -1,15 +1,15 @@
 [Unit]
-Description=Gunicorn server for SITENAME
+  Description=Gunicorn server for SITENAME
 [Service]
-Restart=on-failure
-User=username
-ENVIRONMENT=EMAIL_HOST_PASSWORD=EMAIL_PASSWORD
-WorkingDirectory=/home/username/sites/SITENAME/source
-ExecStart=/home/username/sites/SITENAME/virtualenv/bin/gunicorn \
-  --bind unix:/tmp/SITENAME.socket \
-  --capture-output \
-  --access-logfile ../access.log \
-  --error-logfile ../error.log \
-  superlists.wsgi:application
+  Restart=on-failure
+  User=username
+  Environment=EMAIL_HOST_PASSWORD=EMAIL_PASSWORD
+  WorkingDirectory=/home/username/sites/SITENAME/source
+  ExecStart=/home/username/sites/SITENAME/virtualenv/bin/gunicorn \
+    --bind unix:/tmp/SITENAME.socket \
+    --capture-output \
+    --access-logfile ../access.log \
+    --error-logfile ../error.log \
+    superlists.wsgi:application
 [Install]
-WantedBy=multi-user.target
+  WantedBy=multi-user.target
