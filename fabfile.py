@@ -17,7 +17,7 @@ def init(username='user'):
     sudo(f'apt install -y nginx python3 python3-pip python3-venv')
 
 
-def deploy():
+def deploy(email_password):
     site_folder = f"/home/{env.user}/sites/{env.host}"
     source_folder = site_folder + "/source"
     virtualenv_folder = f'{source_folder}/../virtualenv'
@@ -28,8 +28,9 @@ def deploy():
     nginx_template = f"{source_folder}/deploy_config/nginx.template.conf"
 
     def _create_directory_structure():
-        for sub_folder in ("database", "static", "virtualenv", "source"):
-            run(f"mkdir -p {site_folder}/{sub_folder}")
+        if not exists(source_folder):
+            for sub_folder in ("database", "static", "virtualenv", "source"):
+                run(f"mkdir -p {site_folder}/{sub_folder}")
 
     def _get_latest_source():
         if exists(f"{source_folder}/.git"):
@@ -71,11 +72,12 @@ def deploy():
         sed(nginx_template, "SITENAME", env.host)
         sed(service_template, "SITENAME", env.host)
         sed(service_template, "USERNAME", env.user)
+        sed(service_template, "EMAIL_PASSWORD", email_password)
         sudo(f'cp {service_template} /etc/systemd/system/gunicorn.service')
         sudo(f'cp {nginx_template} /etc/nginx/sites-available/superlists')
         sudo(f'ln -fs /etc/nginx/sites-available/superlists /etc/nginx/sites-enabled/superlists')
         _systemctl("enable", "gunicorn")
-        _systemctl("start", "gunicorn")
+        _systemctl("restart", "gunicorn")
         _systemctl("reload", "nginx")
 
     _create_directory_structure()
