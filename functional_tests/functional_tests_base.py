@@ -27,9 +27,10 @@ def wait(fn):
 class FunctionalTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
-        staging_server = os.environ.get('STAGING_SERVER')
-        if staging_server:
-            self.live_server_url = f"http://{staging_server}"
+        self.staging_server = os.environ.get('STAGING_SERVER')
+        self.test_email = 'karanjadev64@gmail.com' if os.environ.get('EMAIL_PASSWORD') else 'edith@example.com'
+        if self.staging_server:
+            self.live_server_url = f"http://{self.staging_server}"
 
     def tearDown(self) -> None:
         self.browser.quit()
