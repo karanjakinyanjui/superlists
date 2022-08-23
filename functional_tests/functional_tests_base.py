@@ -7,6 +7,8 @@ from selenium.common import WebDriverException
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 
+from functional_tests.server_tools import reset_database
+
 MAX_WAIT = 10
 
 
@@ -28,9 +30,10 @@ class FunctionalTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.staging_server = os.environ.get('STAGING_SERVER')
-        self.test_email = 'karanjadev64@gmail.com' if os.environ.get('EMAIL_PASSWORD') else 'edith@example.com'
+        self.test_email = 'hugosnotif@gmail.com' if os.environ.get('EMAIL_PASSWORD') else 'edith@example.com'
         if self.staging_server:
             self.live_server_url = f"http://{self.staging_server}"
+            reset_database(self.staging_server)
 
     def tearDown(self) -> None:
         self.browser.quit()

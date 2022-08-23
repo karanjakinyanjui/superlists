@@ -38,9 +38,9 @@ class LoginTest(FunctionalTest):
         email = self.wait_for_email(self.test_email, SUBJECT)
 
         # It has a url link in it
-        self.assertIn('Use this link to log in', email.body)
-        url_search = re.search(r'http://.+/.+$', email.body)
-        self.assertTrue(url_search, f"Could not find url in email body:\n {email.body}")
+        self.assertIn('Use this link to log in', email)
+        url_search = re.search(r'http://.+/.+$', email)
+        self.assertTrue(url_search, f"Could not find url in email body:\n {email}")
         url = url_search.group(0)
         self.assertIn(self.live_server_url, url)
 
@@ -65,7 +65,7 @@ class LoginTest(FunctionalTest):
 
         email_id = None
         start = time.time()
-        inbox = poplib.POP3_SSL('pop.mail.yahoo.com')
+        inbox = poplib.POP3_SSL('pop.gmail.com')
         try:
             inbox.user(email_address)
             inbox.pass_(os.environ['EMAIL_PASSWORD'])
@@ -73,10 +73,9 @@ class LoginTest(FunctionalTest):
                 # get 10 newest messages
                 count, _ = inbox.stat()
                 for i in reversed(range(max(1, count - 10), count + 1)):
-                    print(f'getting msg {i}')
                     _, lines, __ = inbox.retr(i)
-                    lines = [line.decode('utf8') for line in lines]
-                    print(lines)
+                    lines = [line.decode('utf8') for line in lines if line]
+
                     if f'Subject: {subject}' in lines:
                         email_id = i
                         body = '\n'.join(lines)
